@@ -45,7 +45,7 @@ const router = createRouter({
           component: CartList
         },
         {
-          path: 'checkout',
+          path: 'checkout/:id',
           component: Checkout
         },
         {

@@ -8,6 +8,7 @@ import { useCartStore } from '@/stores/cartStore'
 const cartStore = useCartStore()
 const goods = ref({})
 const route = useRoute()
+
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result
@@ -32,26 +33,26 @@ const addCart = () => {
   if (skuObj.skuId) {
     console.log(skuObj, cartStore.addCart)
     // 规则已经选择  触发action
-        cartStore.addCart({
-      id: goods.value.goodsId,
-      name: goods.value.goodsName,
-      picture: "https://yanxuan-item.nosdn.127.net/21d2e9b754487aa3030ce105493a9473.jpg",
-      price: goods.value.goodsPrice,
-      count: count.value,
-      skuId: skuObj.skuId,
-      attrsText: skuObj.specsText,
-      selected: true
-    })
-    // cartStore.addCart({
-    //   id: goods.value.id,
-    //   name: goods.value.name,
-    //   picture: goods.value.mainPictures[0],
-    //   price: goods.value.price,
+    //     cartStore.addCart({
+    //   id: goods.value.goodsId,
+    //   name: goods.value.goodsName,
+    //   picture: "https://yanxuan-item.nosdn.127.net/21d2e9b754487aa3030ce105493a9473.jpg",
+    //   price: goods.value.goodsPrice,
     //   count: count.value,
     //   skuId: skuObj.skuId,
     //   attrsText: skuObj.specsText,
     //   selected: true
     // })
+    cartStore.addCart({
+      id: goods.value.id,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: goods.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,
+      selected: true
+    })
   } else {
     // 规格没有选择 提示用户
     ElMessage.warning('请选择规格')

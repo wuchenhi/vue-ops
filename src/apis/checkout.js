@@ -1,9 +1,9 @@
 import request from '@/utils/http'
 
 // 获取详情接口
-export const getCheckInfoAPI = () => {
+export const getCheckInfoAPI = (id) => {
   return request({
-    url: 'order/confirm'
+    url: `order/confirm/pre/${id}`
   })
 }
 

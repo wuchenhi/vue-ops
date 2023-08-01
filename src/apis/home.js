@@ -1,6 +1,20 @@
 import httpInstance from '@/utils/http'
 import axios from 'axios'
 
+
+/**
+ * @description: 获取货物列表
+ * @param {*}
+ * @return {*}
+ */
+export const getHotAPI = () => {
+  return httpInstance({
+    url: 'goods'
+  })
+}
+
+
+
 // 获取banner
 
 export function getBannerAPI (params = {}) {
@@ -31,16 +45,7 @@ export const findNewAPI = () => {
   })
 }
 
-/**
- * @description: 获取人气推荐
- * @param {*}
- * @return {*}
- */
-export const getHotAPI = () => {
-    return httpInstance({
-      url: 'goods'
-    })
-  }
+
 
 // export const getHotAPI = () => {
 //   return httpInstance({

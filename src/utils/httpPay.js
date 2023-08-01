@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
 
 const httpInstance = axios.create({
-  baseURL: '/api',
+  baseURL: '/images',
   timeout: 5000
 })
 

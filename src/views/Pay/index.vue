@@ -10,8 +10,10 @@ const payInfo = ref({})
 const getPayInfo = async () => {
   const res = await getOrderAPI(route.query.id)
   payInfo.value = res.result
+  window.console.log(payInfo.value)
   // 初始化倒计时秒数
-  start(res.result.countdown)
+  // start(res.result.countdown)
+  start(300)
 }
 onMounted(() => getPayInfo())
 
@@ -20,10 +22,10 @@ onMounted(() => getPayInfo())
 // 支付地址
 
 //const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
-const baseURL = 'http://localhost:8091/pay-web/pay/createPayment'//
-const backURL = 'http://127.0.0.1:5173/paycallback'//
+const baseURL = 'http://localhost:8091/pay-web/pay/createPayment'
+const backURL = 'http://127.0.0.1:5173/paycallback'
 const redirectUrl = encodeURIComponent(backURL)
-const payUrl = 'http://localhost:8091/pay-web/pay/createPay?orderId=881262120078020608&payAmount=200'
+const payUrl = `http://localhost:8091/pay-web/pay/createPay?orderId=${route.query.id}&payAmount=`
 //const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
 
 </script>
@@ -41,7 +43,7 @@ const payUrl = 'http://localhost:8091/pay-web/pay/createPay?orderId=881262120078
         </div>
         <div class="amount">
           <span>应付总额：</span>
-          <span>¥{{ payInfo.payMoney?.toFixed(2) }}</span>
+          <span>¥{{ payInfo.payAmount?.toFixed(2) }}</span>
         </div>
       </div>
       <!-- 付款方式 -->
@@ -54,7 +56,7 @@ const payUrl = 'http://localhost:8091/pay-web/pay/createPay?orderId=881262120078
         </div>
         <div class="item">
           <p>支付方式</p>
-          <a class="btn" :href="payUrl">宁波银行</a>
+          <a class="btn" :href="payUrl+payInfo.payAmount">宁波银行</a>
           <a class="btn" href="javascript:;">工商银行</a>
           <a class="btn" href="javascript:;">建设银行</a>
           <a class="btn" href="javascript:;">农业银行</a>

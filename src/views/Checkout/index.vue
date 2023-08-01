@@ -1,64 +1,91 @@
 <script setup>
 import { getCheckInfoAPI, createOrderAPI } from '@/apis/checkout'
-import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { useRouter,useRoute } from 'vue-router'
+import { onMounted, ref} from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 const cartStore = useCartStore()
 const router = useRouter()
+const route = useRoute()
+
 // 获取结算信息
-const checkInfo = ref({}) // 订单对象
+const checkInfo = ref(null) // 订单对象
 const curAddress = ref({}) // 默认地址
+
 const getCheckInfo = async () => {
-  const res = await getCheckInfoAPI()
+  const res = await getCheckInfoAPI(route.params.id)
   checkInfo.value = res.result
+
+  // window.console.log(checkInfo.value)
+  // window.console.log(res.result.goods.goodsId)
+  // window.console.log(checkInfo.value.goods.goodsId)
   // 适配默认地址
   // 从地址列表中筛选出来 isDefault === 0 那一项
-  const item = checkInfo.value.userAddresses.find(item => item.isDefault === 0)
-  curAddress.value = item
+  // const item = checkInfo.value.userAddresses.find(item => item.isDefault === 0)
+  // curAddress.value = item
 }
 
 onMounted(() => getCheckInfo())
+// created(() => getCheckInfo())
+
+
+// window.console.log(checkInfo.value)
 
 // 控制弹框打开
 const showDialog = ref(false)
 
-
 // 切换地址
-const activeAddress = ref({})
-const switchAddress = (item) => {
-  activeAddress.value = item
-}
-const confirm = () => {
-  curAddress.value = activeAddress.value
-  showDialog.value = false
-  activeAddress.value = {}
-}
+// const activeA=> {
+//   curAddress.value = activeAddress.value
+//   showDialog.value = false
+//   activeAddress.valueddress = ref({})
+// const switchAddress = (item) => {
+//   activeAddress.value = item
+// }
+// const confirm = ()  = {}
+// }
 
 // 创建订单
 const createOrder = async () => {
   const res = await createOrderAPI({
-    deliveryTimeType: 1,
-    payType: 1,
-    payChannel: 1,
-    buyerMessage: '',
-    goods: checkInfo.value.goods.map(item => {
-      return {
-        skuId: item.skuId,
-        count: item.count
-      }
-    }),
-    addressId: curAddress.value.id
+    userId:'378715381059301373',
+    goodsId:route.params.id
+    // couponId:'345988230098857990'
   })
-  const orderId = res.result.id
+
+  const orderId = res.result.orderId
   router.push({
     path: '/pay',
     query: {
       id: orderId
     }
   })
-  // 更新购物车
-  cartStore.updateNewList()
 }
+// 创建订单
+// const createOrder = async() => {
+//   const res = await createOrderAPI({
+//     deliveryTimeType: 1,
+//     payType: 1, 
+//     payChannel: 1,
+//     buyerMessage: '',
+//     goods: checkInfo.value.goods.map(item => {
+//       return {
+//         skuId: item.skuId,
+//         count: item.count
+//       }
+//     }),
+//     addressId: curAddress.value.id
+//   })
+
+//   const orderId = res.result.id
+//   router.push({
+//     path: '/pay',
+//     query: {
+//       id: orderId
+//     }
+//   })
+//   // 更新购物车
+//   cartStore.updateNewList()
+// }
 
 </script>
 
@@ -67,23 +94,23 @@ const createOrder = async () => {
     <div class="container">
       <div class="wrapper">
         <!-- 收货地址 -->
-        <h3 class="box-title">收货地址</h3>
+        <!-- <h3 class="box-title">收货地址</h3>
         <div class="box-body">
-          <div class="address">
-            <div class="text">
+          <div class="address"> -->
+            <!-- <div class="text">
               <div class="none" v-if="!curAddress">您需要先添加收货地址才可提交订单。</div>
               <ul v-else>
                 <li><span>收<i />货<i />人：</span>{{ curAddress.receiver }}</li>
                 <li><span>联系方式：</span>{{ curAddress.contact }}</li>
                 <li><span>收货地址：</span>{{ curAddress.fullLocation }} {{ curAddress.address }}</li>
               </ul>
-            </div>
-            <div class="action">
+            </div> -->
+            <!-- <div class="action">
               <el-button size="large" @click="showDialog = true">切换地址</el-button>
               <el-button size="large">添加地址</el-button>
-            </div>
-          </div>
-        </div>
+            </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
         <!-- 商品信息 -->
         <h3 class="box-title">商品信息</h3>
         <div class="box-body">
@@ -98,20 +125,21 @@ const createOrder = async () => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="i in checkInfo.goods" :key="i.id">
+              <!-- <tr v-for="i in checkInfo.goods" :key="i.id"> -->
+              <tr key="checkInfo?.goods.id">
                 <td>
                   <a href="javascript:;" class="info">
-                    <img :src="i.picture" alt="">
+                    <!-- <img :src="i.picture" alt=""> -->
                     <div class="right">
-                      <p>{{ i.name }}</p>
-                      <p>{{ i.attrsText }}</p>
+                      <p>{{ checkInfo?.goods.goodsName }}</p>
+                      <!-- <p>{{ i.attrsText }}</p> -->
                     </div>
                   </a>
                 </td>
-                <td>&yen;{{ i.price }}</td>
-                <td>{{ i.price }}</td>
-                <td>&yen;{{ i.totalPrice }}</td>
-                <td>&yen;{{ i.totalPayPrice }}</td>
+                <td>&yen;{{ checkInfo?.goods.goodsPrice }}</td>
+                <td>1</td>
+                <td>&yen;{{ checkInfo?.goods.goodsPrice }}</td>
+                <td>&yen;{{ checkInfo?.goods.goodsPrice }}</td>
               </tr>
             </tbody>
           </table>
@@ -136,19 +164,19 @@ const createOrder = async () => {
           <div class="total">
             <dl>
               <dt>商品件数：</dt>
-              <dd>{{ checkInfo.summary?.goodsCount }}件</dd>
+              <dd>1件</dd>
             </dl>
             <dl>
               <dt>商品总价：</dt>
-              <dd>¥{{ checkInfo.summary?.totalPrice.toFixed(2) }}</dd>
+              <dd>¥{{ checkInfo?.goods.goodsPrice }}</dd>
             </dl>
             <dl>
               <dt>运<i></i>费：</dt>
-              <dd>¥{{ checkInfo.summary?.postFee.toFixed(2) }}</dd>
+              <dd>¥0</dd>
             </dl>
             <dl>
               <dt>应付总额：</dt>
-              <dd class="price">{{ checkInfo.summary?.totalPayPrice.toFixed(2) }}</dd>
+              <dd class="price">{{ checkInfo?.goods.goodsPrice }}</dd>
             </dl>
           </div>
         </div>
@@ -161,7 +189,7 @@ const createOrder = async () => {
   </div>
   <!-- 切换地址 -->
   <el-dialog v-model="showDialog" title="切换收货地址" width="30%" center>
-    <div class="addressWrapper">
+    <!-- <div class="addressWrapper">
       <div class="text item" :class="{ active: activeAddress.id === item.id }" @click="switchAddress(item)"
         v-for="item in checkInfo.userAddresses" :key="item.id">
         <ul>
@@ -170,7 +198,7 @@ const createOrder = async () => {
           <li><span>收货地址：</span>{{ item.fullLocation + item.address }}</li>
         </ul>
       </div>
-    </div>
+    </div> -->
     <template #footer>
       <span class="dialog-footer">
         <el-button>取消</el-button>
