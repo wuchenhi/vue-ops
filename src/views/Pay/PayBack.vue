@@ -5,35 +5,35 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const orderInfo = ref({})
 
+// 查询订单
 const getOrderInfo = async () => {
-  const res = await getOrderAPI(route.query.orderId)
+  const res = await getOrderAPI(route.query.id)
   orderInfo.value = res.result
+
 }
 
 onMounted(() => getOrderInfo())
 
 </script>
 
-
 <template>
   <div class="xtx-pay-page">
     <div class="container">
       <!-- 支付结果 -->
       <div class="pay-result">
-        <!-- 路由参数获取到的是字符串而不是布尔值 -->
-        <span class="iconfont icon-queren2 green" v-if="$route.query.payResult === 'true'"></span>
+        <span class="iconfont icon-queren2 green" v-if="orderInfo.payStatus === 2"></span>
         <span class="iconfont icon-shanchu red" v-else></span>
-        <p class="tit">支付{{ $route.query.payResult === 'true' ? '成功' : '失败' }}</p>
+        <p class="tit">支付{{ orderInfo.payStatus === 2 ? '成功' : '失败' }}</p>
         <p class="tip">我们将尽快为您发货，收货期间请保持手机畅通</p>
-        <p>支付方式：<span>支付宝</span></p>
-        <p>支付金额：<span>¥{{ orderInfo.payMoney?.toFixed(2) }}</span></p>
+        <p>支付方式：<span>宁波银行</span></p>
+        <p>支付金额：<span>¥{{ orderInfo.payAmount?.toFixed(2) }}</span></p>
         <div class="btn">
           <el-button type="primary" style="margin-right:20px">查看订单</el-button>
           <el-button>进入首页</el-button>
         </div>
         <p class="alert">
           <span class="iconfont icon-tip"></span>
-          温馨提示：小兔鲜儿不会以订单异常、系统升级为由要求您点击任何网址链接进行退款操作，保护资产、谨慎操作。
+          温馨提示：宁波银行不会以订单异常、系统升级为由要求您点击任何网址链接进行退款操作，保护资产、谨慎操作。
         </p>
       </div>
     </div>

@@ -1,29 +1,53 @@
 <script setup>
-import { getOrderAPI } from '@/apis/pay'
+import { getOrderAPI, createPayAPI, finishPayAPI } from '@/apis/pay'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCountDown } from '@/composables/useCountDown'
+
 const { formatTime, start } = useCountDown()
 // 获取订单数据
 const route = useRoute()
 const payInfo = ref({})
+
 const getPayInfo = async () => {
   const res = await getOrderAPI(route.query.id)
   payInfo.value = res.result
-  window.console.log(payInfo.value)
+  // window.console.log(payInfo.value)
   // 初始化倒计时秒数
   // start(res.result.countdown)
   start(300)
 }
 onMounted(() => getPayInfo())
 
+
+// 创建pay
+const payResponseInfo = ref({})
+
+const createPay = async () => {
+  const res = await createPayAPI({
+    orderId:route.query.id,
+    payAmount:payInfo.value.payAmount
+  })
+  payResponseInfo.value = res.result
+}
+
+// 完成pay
+const finishInfo = ref({})
+const finishPay = async () => {
+  window.console.log(payResponseInfo.value.payId)
+  const res = await finishPayAPI({
+    payId:payResponseInfo.value.payId
+  })
+  finishInfo.value = res.request
+  window.console.log(finishInfo.value.isPaid)
+}
+
 // 跳转支付
 // 携带订单id以及回调地址跳转到支付地址（get）
 // 支付地址
-
 //const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
 const baseURL = 'http://localhost:8091/pay-web/pay/createPayment'
-const backURL = 'http://127.0.0.1:5173/paycallback'
+const backURL = `http://127.0.0.1:5173/paycallback?id=${route.query.id}`
 const redirectUrl = encodeURIComponent(backURL)
 const payUrl = `http://localhost:8091/pay-web/pay/createPay?orderId=${route.query.id}&payAmount=`
 //const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
@@ -56,11 +80,11 @@ const payUrl = `http://localhost:8091/pay-web/pay/createPay?orderId=${route.quer
         </div>
         <div class="item">
           <p>支付方式</p>
-          <a class="btn" :href="payUrl+payInfo.payAmount">宁波银行</a>
-          <a class="btn" href="javascript:;">工商银行</a>
-          <a class="btn" href="javascript:;">建设银行</a>
-          <a class="btn" href="javascript:;">农业银行</a>
-          <a class="btn" href="javascript:;">交通银行</a>
+          <!-- <a class="btn" :href="payUrl+payInfo.payAmount">宁波银行</a> -->
+          <a class="btn" @click="createPay">宁波银行--创建支付</a>
+          <a class="btn" @click="finishPay">宁波银行--支付</a>
+          <a class="btn" :href="backURL">宁波银行--完成支付</a>
+          <!-- <el-button  type="primary" size="large">创建订单</el-button> -->
         </div>
       </div>
     </div>
