@@ -18,7 +18,7 @@ const userStore = useUserStore()
 
 // 1. 准备表单对象
 const form = ref({
-  account: 'yyw',
+  account: 'wuyi',
   password: '123456',
   agree: true
 })
@@ -129,7 +129,7 @@ const doLogin = () => {
           <a href="javascript:;">搜索推荐</a>
           <a href="javascript:;">友情链接</a>
         </p>
-        <p>CopyRight &copy; 小兔鲜儿</p>
+        <p>CopyRight &copy; 宁波银行</p>
       </div>
     </footer>
   </div>
