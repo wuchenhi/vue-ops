@@ -15,39 +15,20 @@ const getCheckInfo = async () => {
   const res = await getCheckInfoAPI(route.params.id)
   checkInfo.value = res.result
 
-  // window.console.log(checkInfo.value)
-  // window.console.log(res.result.goods.goodsId)
-  // window.console.log(checkInfo.value.goods.goodsId)
-  // 适配默认地址
-  // 从地址列表中筛选出来 isDefault === 0 那一项
-  // const item = checkInfo.value.userAddresses.find(item => item.isDefault === 0)
-  // curAddress.value = item
 }
 
 onMounted(() => getCheckInfo())
-// created(() => getCheckInfo())
-
 
 // window.console.log(checkInfo.value)
 
 // 控制弹框打开
 const showDialog = ref(false)
 
-// 切换地址
-// const activeA=> {
-//   curAddress.value = activeAddress.value
-//   showDialog.value = false
-//   activeAddress.valueddress = ref({})
-// const switchAddress = (item) => {
-//   activeAddress.value = item
-// }
-// const confirm = ()  = {}
-// }
 
 // 创建订单
 const createOrder = async () => {
   const res = await createOrderAPI({
-    userId:'378715381059301373',
+    userId:'378715381059301376',
     goodsId:route.params.id
     // couponId:'345988230098857990'
   })
@@ -60,32 +41,6 @@ const createOrder = async () => {
     }
   })
 }
-// 创建订单
-// const createOrder = async() => {
-//   const res = await createOrderAPI({
-//     deliveryTimeType: 1,
-//     payType: 1, 
-//     payChannel: 1,
-//     buyerMessage: '',
-//     goods: checkInfo.value.goods.map(item => {
-//       return {
-//         skuId: item.skuId,
-//         count: item.count
-//       }
-//     }),
-//     addressId: curAddress.value.id
-//   })
-
-//   const orderId = res.result.id
-//   router.push({
-//     path: '/pay',
-//     query: {
-//       id: orderId
-//     }
-//   })
-//   // 更新购物车
-//   cartStore.updateNewList()
-// }
 
 </script>
 
@@ -93,24 +48,6 @@ const createOrder = async () => {
   <div class="xtx-pay-checkout-page">
     <div class="container">
       <div class="wrapper">
-        <!-- 收货地址 -->
-        <!-- <h3 class="box-title">收货地址</h3>
-        <div class="box-body">
-          <div class="address"> -->
-            <!-- <div class="text">
-              <div class="none" v-if="!curAddress">您需要先添加收货地址才可提交订单。</div>
-              <ul v-else>
-                <li><span>收<i />货<i />人：</span>{{ curAddress.receiver }}</li>
-                <li><span>联系方式：</span>{{ curAddress.contact }}</li>
-                <li><span>收货地址：</span>{{ curAddress.fullLocation }} {{ curAddress.address }}</li>
-              </ul>
-            </div> -->
-            <!-- <div class="action">
-              <el-button size="large" @click="showDialog = true">切换地址</el-button>
-              <el-button size="large">添加地址</el-button>
-            </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
         <!-- 商品信息 -->
         <h3 class="box-title">商品信息</h3>
         <div class="box-body">

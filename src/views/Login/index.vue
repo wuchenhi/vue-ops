@@ -4,6 +4,11 @@
 // 表单校验（账号名+密码）
 
 import { ref } from 'vue'
+// import md5 from "js-md5";
+// import { md5 } from 'js-md5'
+
+import md5 from "js-md5"  //导入
+
 
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
@@ -52,17 +57,19 @@ const rules = {
 const formRef = ref(null)
 const router = useRouter()
 const doLogin = () => {
-  const { account, password } = form.value
+  const { account, passwordIn } = form.value
   // 调用实例方法
   formRef.value.validate(async (valid) => {
     // valid: 所有表单都通过校验  才为true
     console.log(valid)
     // 以valid做为判断条件 如果通过校验才执行登录逻辑
     if (valid) {
-      // TODO LOGIN
+      // LOGIN
+      var salt = "1a2b3c4d";
+      var str = "" + salt.charAt(0) + salt.charAt(2) + passwordIn +
+salt.charAt(5) + salt.charAt(4);
+      var password = md5(str);
       await userStore.getUserInfo({ account, password })
-
-      //await myLoginAPI({ account, password })
  
       // 1. 提示用户
       ElMessage({ type: 'success', message: '登录成功' })
@@ -83,7 +90,7 @@ const doLogin = () => {
     <header class="login-header">
       <div class="container m-top-20">
         <h1 class="logo">
-          <RouterLink to="/">小兔鲜</RouterLink>
+          <RouterLink to="/">宁波银行</RouterLink>
         </h1>
         <RouterLink class="entry" to="/">
           进入网站首页

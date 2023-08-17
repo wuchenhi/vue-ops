@@ -45,8 +45,7 @@ const finishPay = async () => {
 // 跳转支付
 // 携带订单id以及回调地址跳转到支付地址（get）
 // 支付地址
-//const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
-const baseURL = 'http://localhost:8091/pay-web/pay/createPayment'
+// const baseURL = 'http://localhost:8091/pay-web/pay/createPayment'
 const backURL = `http://127.0.0.1:5173/paycallback?id=${route.query.id}`
 const redirectUrl = encodeURIComponent(backURL)
 const payUrl = `http://localhost:8091/pay-web/pay/createPay?orderId=${route.query.id}&payAmount=`
