@@ -1,13 +1,8 @@
 # vue 
 金融订单支付系统前端界面
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+通过配置代理，解决跨域问题
+登录、显示商品、创建订单、支付、查询订单支付状态完成支付等功能的实现与路由
 
 ## Project Setup
 
