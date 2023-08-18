@@ -3,6 +3,7 @@ import { getOrderAPI, createPayAPI, finishPayAPI } from '@/apis/pay'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCountDown } from '@/composables/useCountDown'
+import { ElMessage } from 'element-plus'
 
 const { formatTime, start } = useCountDown()
 // 获取订单数据
@@ -29,6 +30,9 @@ const createPay = async () => {
     payAmount:payInfo.value.payAmount
   })
   payResponseInfo.value = res.result
+
+  // 提示用户
+  ElMessage({ type: 'success', message: '创建订单成功' })
 }
 
 // 完成pay
@@ -38,6 +42,8 @@ const finishPay = async () => {
   const res = await finishPayAPI({
     payId:payResponseInfo.value.payId
   })
+  // 提示用户
+  ElMessage({ type: 'success', message: '支付成功' })
   finishInfo.value = res.request
   window.console.log(finishInfo.value.isPaid)
 }
