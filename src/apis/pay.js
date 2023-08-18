@@ -25,6 +25,3 @@ export const finishPayAPI = (data) => {
     data
   })
 }
-
-
-// const payUrl = `http://localhost:8091/pay-web/pay/createPay?orderId=${route.query.id}&payAmount=`
